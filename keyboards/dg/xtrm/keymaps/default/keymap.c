@@ -88,9 +88,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 void led_set_user(uint8_t usb_led) {
   if (usb_led & (1 << USB_LED_CAPS_LOCK)) {
-    DDRD |= (1 << 1); PORTD &= ~(1 << 1);
+    DDRB |= (1 << 2); PORTB &= ~(1 << 2);
   } else {
-    DDRD &= ~(1 << 1); PORTD &= ~(1 << 1);
+    DDRB &= ~(1 << 2); PORTB &= ~(1 << 2);
   }
 }
 
