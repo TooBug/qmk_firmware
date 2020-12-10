@@ -64,6 +64,22 @@ void matrix_init_user(void) {
 void matrix_scan_user(void) {
 }
 
+void led_on(void){
+  DDRD |= (1 << 1); PORTD &= ~(1 << 1);
+}
+
+void led_off(void){
+  DDRD &= ~(1 << 1); PORTD &= ~(1 << 1);
+}
+
+void led_flash(void){
+  led_on();
+  _delay_ms(200);
+  led_off();
+  _delay_ms(100);
+}
+
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case KC_LCTL:
@@ -114,14 +130,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         active_layer = (active_layer + 1) % 3;
         for(int i=0; i<=active_layer;i++){
             layer_on(active_layer);
+            led_flash();
         }
-        if(active_layer == 0){
+        /* if(active_layer == 0){
             SEND_STRING("Mac(Ctrl-Opt-Cmd)");
         }else if(active_layer == 1){
             SEND_STRING("Win(Ctrl-Win-Alt)");
         }else if(active_layer == 2){
-            SEND_STRING("Win(Alt-Win-Ctrl");
-        }
+            SEND_STRING("Win(Alt-Win-Ctrl)");
+        } */
       }
       return false;
       break;
@@ -129,11 +146,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
+
 void led_set_user(uint8_t usb_led) {
   if (usb_led & (1 << USB_LED_CAPS_LOCK)) {
-    DDRD |= (1 << 1); PORTD &= ~(1 << 1);
+    led_on();
   } else {
-    DDRD &= ~(1 << 1); PORTD &= ~(1 << 1);
+    led_off();
   }
 }
 
